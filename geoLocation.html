@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>User Geo Location</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <style>
+      .container {
+        width: 100%;
+        height: 100%;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .user-location {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .user-location .span-title {
+        font-weight: 600;
+      }
+
+      .users-position {
+        padding: 10px;
+        margin: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .span-title {
+        width: 100%;
+      }
+
+      .span-value {
+        float: left;
+        width: 100%;
+        position: relative;
+        left: 10px;
+      }
+    </style>
+
+    <script type="application/javascript">
+      // Return the browser status
+      // navigator.onLine; // true or false
+
+      // Returns true if the browser cookies are enabled
+      // navigator.cookieEnabled; // true or false
+
+      // Returns browser language
+      // navigator.language; // en
+
+      const unSupported = "Browser doesn't support";
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      };
+
+      // Handle geo location error
+      const errorAlert = (errorMessage) => {
+        const message = errorMessage?.message || "";
+        if (message) {
+          alert(message);
+        }
+        userPreference();
+      };
+
+      const userPreference = () => {
+        if (navigator) {
+          document.getElementById("selectedLanguage").innerHTML =
+            navigator.language;
+          document.getElementById("onlineStatus").innerHTML = navigator.onLine;
+          document.getElementById("cookiesEnabled").innerHTML =
+            navigator.cookieEnabled;
+        } else {
+          document.getElementById("selectedLanguage").innerHTML = unSupported;
+          document.getElementById("onlineStatus").innerHTML = unSupported;
+          document.getElementById("cookiesEnabled").innerHTML = unSupported;
+        }
+      };
+
+      // Get browser geo location position
+      const showPosition = (position) => {
+        const latitude = position.coords.latitude || "";
+        const longitude = position.coords.longitude || "";
+        document.getElementById("latitude").innerHTML = latitude;
+        document.getElementById("longitude").innerHTML = longitude;
+        userPreference();
+      };
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          showPosition,
+          errorAlert,
+          options
+        );
+      } else {
+        alert(unSupported);
+      }
+    </script>
+
+    <div class="container">
+      <div class="header-content">
+        <h2>User's Location</h2>
+      </div>
+      <div class="user-location">
+        <div class="users-position">
+          <span class="span-title">Latitude</span>
+          <span>:</span>
+          <span id="latitude" class="span-value">-</span>
+        </div>
+        <div class="users-position">
+          <span class="span-title">Longitude</span>
+          <span>:</span>
+          <span id="longitude" class="span-value">-</span>
+        </div>
+        <div class="users-position">
+          <span class="span-title">Selected Language</span>
+          <span>:</span>
+          <span id="selectedLanguage" class="span-value">-</span>
+        </div>
+        <div class="users-position">
+          <span class="span-title">Online Status</span>
+          <span>:</span>
+          <span id="onlineStatus" class="span-value">-</span>
+        </div>
+        <div class="users-position">
+          <span class="span-title">Cookies enabled</span>
+          <span>:</span>
+          <span id="cookiesEnabled" class="span-value">-</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
